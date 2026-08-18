@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Artist {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  albums    Album[]
+}
+
+model Album {
+  id          String       @id @default(cuid())
+  title       String
+  artistId    String
+  artist      Artist       @relation(fields: [artistId], references: [id])
+  releaseYear Int
+  createdAt   DateTime     @default(now())
+  tracks      AlbumTrack[]
+
+  @@index([artistId])
+}
+
+model Song {
+  id        String       @id @default(cuid())
+  title     String
+  createdAt DateTime     @default(now())
+  tracks    AlbumTrack[]
+}
+
+// Связка Альбом <-> Песня ("многие ко многим" с атрибутом trackNumber):
+// одна и та же песня может входить в разные альбомы с разными порядковыми номерами.
+model AlbumTrack {
+  id          String @id @default(cuid())
+  albumId     String
+  album       Album  @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  songId      String
+  song        Song   @relation(fields: [songId], references: [id], onDelete: Cascade)
+  trackNumber Int
+
+  @@unique([albumId, trackNumber])
+  @@unique([albumId, songId])
+  @@index([albumId])
+  @@index([songId])
+}
