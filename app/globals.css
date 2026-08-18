@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  @apply bg-background font-sans text-primary antialiased;
+  min-height: 100%;
+}
+
+/* Клавиатурная навигация: видимый фокус */
+:focus-visible {
+  outline: 2px solid #7c5cfc;
+  outline-offset: 2px;
+}
+
+/* Тонкий скроллбар в тёмной теме */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2b2b36 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #2b2b36;
+  border-radius: 8px;
+}
+
+/* Трек-лист при перетаскивании */
+li[draggable='true'] {
+  touch-action: manipulation;
+}
