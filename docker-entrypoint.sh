@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-echo "Ожидание готовности базы данных и применение миграций Prisma..."
-node node_modules/prisma/build/index.js migrate deploy
+echo "Ожидание готовности базы данных и синхронизация схемы Prisma..."
+node node_modules/prisma/build/index.js db push --skip-generate || node node_modules/prisma/build/index.js migrate deploy
 
 if [ "$SEED_DEMO_DATA" = "true" ]; then
   echo "Сидирование демо-данными (пропускается, если данные уже есть)..."
